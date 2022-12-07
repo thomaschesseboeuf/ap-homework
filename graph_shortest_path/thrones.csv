@@ -174,8 +174,8 @@ Jon,Styr,16
 Jon,Theon,8
 Jon,Val,12
 Jon,Ygritte,54
-Arryn,Lysa,5
-Arryn,Robert,6
+Jon Arryn,Lysa,5
+Jon Arryn,Robert,6
 Jorah,Barristan,11
 Jorah,Belwas,13
 Jorah,Daario,7
@@ -190,6 +190,7 @@ Lysa,Cersei,4
 Lysa,Hoster,6
 Lysa,Marillion,10
 Lysa,Petyr,29
+Lysa,Robert Arryn,9
 Lysa,Tyrion,5
 Lysa,Tywin,4
 Mance,Craster,11
@@ -248,7 +249,7 @@ Robert,Barristan,5
 Robert,Renly,4
 Robert,Stannis,5
 Robert,Thoros,4
-Arryn,Marillion,4
+Robert Arryn,Marillion,4
 Roose,Brienne,4
 Samwell,Bowen,6
 Samwell,Craster,34
@@ -283,6 +284,7 @@ Sansa,Podrick,8
 Sansa,Renly,4
 Sansa,Rickon,7
 Sansa,Robert,5
+Sansa,Robert Arryn,6
 Sansa,Sandor,6
 Sansa,Shae,8
 Sansa,Tyrion,77
