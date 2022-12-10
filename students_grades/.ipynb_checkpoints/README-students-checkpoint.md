@@ -188,13 +188,15 @@ class Student:
         return sum(self.grades[topic]) / len(self.grades[topic])
     
     def report(self):
-        report = [f'Report for student {self}',
-                 '+===============+===============+',
-                 '|     Topic     |    Average    |',
-                 '+===============+===============+',]
+        txt = f'Report for student {self}\n'
+        txt += '+===============+===============+\n'
+        txt +='|     Topic     |    Average    |\n'
+        txt += '+===============+===============+\n'
         for topic in self.grades:
-            report.append(f'|{topic:^15}|{self.compute_average(topic):^15}')
-            report.append('+===============+===============+')
+            average = f'{self.compute_average(topic):.2f}'
+            txt += f'|{topic:^15}|{average:^15}|\n'
+            txt += '+---------------+---------------+\n'
+        return txt
 ```
 
 ```{code-cell} ipython3
@@ -255,11 +257,6 @@ else:
 Nous aimerions pouvoir accèder très facilement à un élève de la classe. Pour cela, codez la méthode `get_student(first_name: str, last_name:str)` qui permet au code suivant de s'exécuter sans erreur :
 
 ```{code-cell} ipython3
-def f():
-    return None
-```
-
-```{code-cell} ipython3
 try:
     classe = Class("P20")
     student = Student("Matthieu", "Mazière")
@@ -301,34 +298,6 @@ else:
 Nous allons maintenant rentrer les notes des élèves pour les différentes matières. Cette saisie ce fait aussi *via* un fichier csv que vous allez devoir parser. Dans ce cas, chaque ligne du fichier est découpée comme suit : 
 
 `Prénom, Nom, Matière, Note1, Note2, ..., NoteN`
-
-```{code-cell} ipython3
-class Class:
-    def __init__(self, classname: str):
-        self.classname = classname
-        self.students = {}
-        
-    def add_student(self, student: Student):
-        self.students[(student.first_name, student.last_name)] = student 
-        
-
-    def __len__(self):
-        return len(self.students)
-
-    def __repr__(self):
-        return f"Class {self.classname} - {len(self)} student(s)"
-    
-    def get_student(self, first_name: str, last_name:str):
-        if (first_name, last_name) not in self.students:
-            return None        
-        return self.students[(first_name, last_name)]
-    
-    def load_students_from_file(self, filename: str):
-        with open(filename,encoding='utf-8') as f:
-            for line in f:
-                firstname, lastname = line.strip().split(',')
-                self.add_student(Student(firstname, lastname))
-```
 
 ```{code-cell} ipython3
 !head -5 grades.csv
@@ -373,6 +342,64 @@ else:
 
 ### Calcul des moyennes par matière
 Nous allons maintenant nous intéresser à calculer des moyennes de la classe par matière. Codez la méthode `compute_averages()`. Cette dernière doit retourner un dictionnaire dont les clés sont des matières et les valeurs les moyennes de la classe.
+
+```{code-cell} ipython3
+class Class:
+    def __init__(self, classname: str):
+        self.classname = classname
+        self.students = {}
+        
+    def add_student(self, student: Student):
+        self.students[(student.first_name, student.last_name)] = student 
+        
+
+    def __len__(self):
+        return len(self.students)
+
+    def __repr__(self):
+        return f"Class {self.classname} - {len(self)} student(s)"
+    
+    def get_student(self, first_name: str, last_name:str):
+        if (first_name, last_name) not in self.students:
+            return None        
+        return self.students[(first_name, last_name)]
+    
+    def load_students_from_file(self, filename: str):
+        with open(filename,encoding='utf-8') as f:
+            for line in f:
+                firstname, lastname = line.strip().split(',')
+                self.add_student(Student(firstname, lastname))
+    
+    def load_grades_from_file(self, filename: str):
+        with open(filename,encoding='utf-8') as f:
+            for line in f:
+                L = line.strip().split(',')
+                f, l, topic = L[:3]
+                if self.get_student(f,l) != None:
+                    student = self.get_student(f,l)
+                    for i in range(3,len(L)):
+                        student.add_grade(topic,float(L[i]))
+    
+    def catalog(self):
+        d = defaultdict(list)
+        res = {}
+        for k,student in self.students.items():
+            for topic in student.followed_topics():
+                d[topic].append(student)
+        for k,v in d.items():
+            res[k]=len(v)
+        return res
+    
+    def compute_averages(self):
+        d = defaultdict(list)
+        res = {}
+        for k,student in self.students.items():
+            for topic in student.followed_topics():
+                d[topic].append(student.compute_average(topic))
+        for k,v in d.items():
+            res[k] = sum(v)/len(v)
+        return res
+```
 
 ```{code-cell} ipython3
 try:
