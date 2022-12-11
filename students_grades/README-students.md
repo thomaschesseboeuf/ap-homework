@@ -227,6 +227,10 @@ else:
     print('Congrats ! Your implementation works !')
 ```
 
+```{code-cell} ipython3
+
+```
+
 ## La classe `Class`
 Nous allons maintenant gérer un ensemble d'élèves dans l'objet `Class`.
 
