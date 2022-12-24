@@ -10,4 +10,4 @@ def parse(filename):
     return d 
 
 print(parse('graph.csv'))
-    
+

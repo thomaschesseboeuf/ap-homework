@@ -11,7 +11,7 @@ def translate(x):
         r, i = x.real, x.imag
         return Quaternion(r,i,0,0)
     return x
-    
+
 
 # %%
 
@@ -54,6 +54,9 @@ class Quaternion:
         a = g(self.coef, other.coef)
         return Quaternion(*tuple(a))
     
+    def __radd__(self, other):
+        return self + other
+    
     def __eq__(self,other):
         self,other = translate(self), translate(other)
         return np.all(self.coef==other.coef)
@@ -78,7 +81,7 @@ class Quaternion:
                     x = s - {a_pos, b_pos}
                     res[x.pop()] += -a*b
         return Quaternion(*res)
-    
+
 
 # %%
 I = Quaternion(0,1,0,0)
@@ -88,6 +91,9 @@ K = Quaternion(0,0,0,1)
 
 # %%
 I + 1
+
+# %%
+1 + I
 
 # %%
 (I*J).coef == K.coef
